@@ -1,1 +1,191 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spell Checker</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #222;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 32px;
+            border-radius: 16px;
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1.5px solid #ddd;
+            outline: none;
+            resize: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 18px;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #5a67d8);
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .result {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .result h3 {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .corrected-text {
+            background: #f8f9ff;
+            padding: 14px;
+            border-radius: 10px;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .corrections {
+            margin-top: 16px;
+            background: #f4f4f4;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .corrections p {
+            margin: 6px 0;
+        }
+
+        .wrong {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+
+        .arrow {
+            margin: 0 6px;
+            color: #555;
+        }
+
+        .correct {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                margin: 20px;
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📝 Spell Checker</h1>
+    <div class="subtitle">Paste your text and fix spelling instantly</div>
+
+    <form method="POST">
+        <textarea name="text" placeholder="Type or paste your text here...">{{ original_text }}</textarea>
+        <button type="submit">Check Spelling</button>
+    </form>
+
+    {% if corrected_text %}
+    <div class="result">
+        <h3>Corrected Text</h3>
+        <div class="corrected-text">
+            {{ corrected_text }}
+        </div>
+
+        {% if corrections %}
+        <h3 style="margin-top:18px;">Corrections</h3>
+        <div class="corrections">
+            {% for wrong, correct in corrections.items() %}
+                <p>
+                    <span class="wrong">{{ wrong }}</span>
+                    <span class="arrow">→</span>
+                    <span class="correct">{{ correct }}</span>
+                </p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
